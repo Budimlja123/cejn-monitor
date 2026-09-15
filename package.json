@@ -1,0 +1,21 @@
+{
+  "name": "cejn-monitor",
+  "version": "1.0.0",
+  "description": "Prati nove objave na CEJN portalu javnih nabavki (cejn.gov.me) po kljucnim rijecima i salje email.",
+  "main": "src/monitor.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/monitor.js",
+    "dry": "node src/monitor.js --dry",
+    "discover": "node tools/discover.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}

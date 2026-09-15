@@ -1,0 +1,12 @@
+{
+  "_comment": "Kljucne rijeci se traze kao podniz u NASLOVU tendera. Poredjenje je bez razlike na velika/mala slova i bez dijakritika (s=š, c=č/ć, z=ž, dj=đ). Koristi KORIJEN rijeci da uhvatis sve padeze: npr. 'rasvjet' hvata rasvjeta/rasvjete/rasvjetu/rasvjetna...",
+  "keywords": [
+    "rasvjet",
+    "osvjetljen",
+    "osvetljen",
+    "visoka struj",
+    "niska struj",
+    "jaka struj",
+    "slaba struj"
+  ]
+}

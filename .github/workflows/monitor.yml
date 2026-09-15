@@ -1,0 +1,49 @@
+name: CEJN tender monitor
+
+on:
+  schedule:
+    # Svakih 20 minuta (GitHub cron je u UTC; interval je isti nezavisno od zone).
+    - cron: "*/20 * * * *"
+  workflow_dispatch: {} # dozvoli rucno pokretanje iz Actions taba
+
+permissions:
+  contents: write # da moze da commit-uje azurirano state/seen.json
+
+concurrency:
+  group: cejn-monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps (samo runtime)
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Run monitor
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: node src/monitor.js
+
+      - name: Commit updated state
+        run: |
+          if [ -n "$(git status --porcelain state/seen.json)" ]; then
+            git config user.name "cejn-monitor-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state/seen.json
+            git commit -m "chore: update seen state [skip ci]"
+            git push
+          else
+            echo "Nema promjene stanja."
+          fi
